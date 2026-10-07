@@ -162,8 +162,7 @@ CREATE TABLE receta (
     medicamento VARCHAR(100) NOT NULL,
     dosis VARCHAR(50) NOT NULL,
     dias_tratamiento INT NOT NULL,
-    FOREIGN KEY (id_atencion) REFERENCES atencion (id_atencion)
-        ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (id_atencion) REFERENCES atencion (id_atencion) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ============================================================
@@ -246,7 +245,7 @@ BEGIN
     WHERE id_estado IN (1, 2) AND fecha_hora < NOW();
 END //
 
-DROP TRIGGER IF EXISTS validar_sobreagendamiento;
+
 
 -- Agendar una cita nueva en estado Reservada (3.4.4 / 3.6).
 -- El trigger valida especialidad, centro y sobre-agendamiento.
@@ -308,7 +307,7 @@ DELIMITER ;
 -- ============================================================
 
 DELIMITER //
-
+DROP TRIGGER IF EXISTS validar_sobreagendamiento//
 CREATE TRIGGER validar_sobreagendamiento 
 BEFORE INSERT ON cita
 FOR EACH ROW
@@ -473,12 +472,12 @@ INSERT INTO medico_centro (id_medico, id_centro) VALUES
 (4, 1);                -- Dra. Ana atiende en Casa Central
 
 -- 5. USUARIOS: PACIENTES (Rol 1)
-INSERT INTO paciente (rut, nombre_completo, fecha_nacimiento, sexo, telefono_contacto, comuna_residencia, contrasena, id_prevision) VALUES 
-('19876543-2', 'Juan Pérez Cotapos', '1995-04-12', 'M', '+56912345678', 'Valparaíso', 'paciente123', 1),
-('20123456-7', 'Ana María Silva', '2000-08-25', 'F', '+56987654321', 'Viña del Mar', 'paciente123', 2),
-('18234567-8', 'Pedro Morales Soto', '1988-11-03', 'M', '+56911223344', 'Santiago', 'paciente123', 3),
-('17345678-9', 'Luisa Fernández Rivas', '1982-01-15', 'F', '+56955667788', 'Concepción', 'paciente123', 1),
-('21456789-0', 'Diego Araya Castro', '2002-06-30', 'M', '+56999887766', 'San Joaquín', 'paciente123', 2);
+INSERT INTO paciente (rut, nombre_completo, fecha_nacimiento, sexo, telefono_contacto, comuna_residencia, contrasena, id_prevision, email) VALUES 
+('19876543-2', 'Juan Pérez Cotapos', '1995-04-12', 'M', '+56912345678', 'Valparaíso', 'paciente123', 1, 'juan.perez@correo.cl'),
+('20123456-7', 'Ana María Silva', '2000-08-25', 'F', '+56987654321', 'Viña del Mar', 'paciente123', 2, 'ana.silva@correo.cl'),
+('18234567-8', 'Pedro Morales Soto', '1988-11-03', 'M', '+56911223344', 'Santiago', 'paciente123', 3, 'pedro.morales@correo.cl'),
+('17345678-9', 'Luisa Fernández Rivas', '1982-01-15', 'F', '+56955667788', 'Concepción', 'paciente123', 1, 'luisa.fernandez@correo.cl'),
+('21456789-0', 'Diego Araya Castro', '2002-06-30', 'M', '+56999887766', 'San Joaquín', 'paciente123', 2, 'diego.araya@correo.cl');
 
 -- 6. CITAS MÉDICAS (Pasadas y Futuras en diversos Estados)
 INSERT INTO cita (fecha_hora, id_paciente, id_medico, id_centro, id_estado, id_especialidad) VALUES 
@@ -519,11 +518,11 @@ INSERT INTO atencion_diagnostico (id_atencion, id_diagnostico) VALUES
 (5, 1); -- Atención 5 -> Resfriado / Afección cutánea
 
 -- 9. RECETAS MÉRICA (Asociadas a las Atenciones)
-INSERT INTO receta (id_receta, id_atencion, medicamento, dosis, dias_tratamiento) VALUES 
-(1, 1, 'Paracetamol 500mg', '1 tableta cada 8 horas', 5),
-(2, 1, 'Ibuprofeno 400mg', '1 tableta cada 12 horas con alimentos', 3),
-(1, 2, 'Amoxicilina 250mg/5ml', '5ml cada 8 horas', 7),
-(1, 3, 'Ketoprofeno 100mg', '1 comprimido cada 12 horas', 5),
-(1, 4, 'Enalapril 10mg', '1 comprimido cada mañana', 30),
-(2, 4, 'Metformina 850mg', '1 comprimido con el almuerzo', 30),
-(1, 5, 'Loratadina 10mg', '1 comprimido en la noche', 10);
+INSERT INTO receta (id_atencion, medicamento, dosis, dias_tratamiento) VALUES 
+(1, 'Paracetamol 500mg', '1 tableta cada 8 horas', 5),
+(1, 'Ibuprofeno 400mg', '1 tableta cada 12 horas con alimentos', 3),
+(2, 'Amoxicilina 250mg/5ml', '5ml cada 8 horas', 7),
+(3, 'Ketoprofeno 100mg', '1 comprimido cada 12 horas', 5),
+(4, 'Enalapril 10mg', '1 comprimido cada mañana', 30),
+(4, 'Metformina 850mg', '1 comprimido con el almuerzo', 30),
+(5, 'Loratadina 10mg', '1 comprimido en la noche', 10);
