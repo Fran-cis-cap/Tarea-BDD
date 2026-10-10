@@ -126,6 +126,8 @@ CREATE TABLE cita (
     id_centro INT NOT NULL,
     id_estado INT NOT NULL,
     id_especialidad INT NOT NULL,
+    INDEX idx_cita_medico_fecha (id_medico, fecha_hora),
+    INDEX idx_cita_paciente_fecha (id_paciente, fecha_hora),
     FOREIGN KEY (id_paciente) REFERENCES paciente (id_paciente) ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (id_medico) REFERENCES medico (id_medico) ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (id_centro) REFERENCES centro_medico (id_centro) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -370,10 +372,14 @@ CREATE VIEW historial_clinico_completo AS
 SELECT 
     a.id_atencion,
     c.id_cita,
+    c.id_paciente,
     c.fecha_hora AS fecha_cita,
     p.rut AS rut_paciente,
     p.nombre_completo AS nombre_paciente,
+    pr.id_prevision,
+    pr.nombre_prevision,
     p.fecha_nacimiento,
+    c.id_medico,
     m.rut AS rut_medico,
     m.nombre_completo AS nombre_medico,
     e.nombre_especialidad,
@@ -385,6 +391,13 @@ SELECT
     r.medicamento,
     r.dosis,
     r.dias_tratamiento
+    (SELECT GROUP_CONCAT(CONCAT(d.codigo_cie10, ' - ', d.descripcion) SEPARATOR '; ')
+       FROM atencion_diagnostico ad
+       JOIN diagnostico d ON ad.id_diagnostico = d.id_diagnostico
+      WHERE ad.id_atencion = a.id_atencion) AS diagnosticos,
+    (SELECT GROUP_CONCAT(CONCAT(r.medicamento, ' (', r.dosis, ', ', r.dias_tratamiento, ' días)') SEPARATOR '; ')
+       FROM receta r
+      WHERE r.id_atencion = a.id_atencion) AS recetas
 FROM atencion a
 JOIN cita c ON a.id_cita = c.id_cita
 JOIN paciente p ON c.id_paciente = p.id_paciente
