@@ -7,7 +7,7 @@ Plataforma web de gestión clínica de la red de salud SaludUSM: agendamiento de
 | Nombre | Rol USM |
 |---|---|
 | Francisca Catalán | 202473656-6 |
-| nombre | rol |
+| Sebastián Parra | 202473570-5 |
 
 **Repositorio GitHub:** (poner repositorio)
 
