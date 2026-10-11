@@ -9,8 +9,8 @@ Plataforma web de gestión clínica de la red de salud SaludUSM: agendamiento de
 | Francisca Catalán | 202473656-6 |
 | Sebastián Parra | 202473570-5 |
 
-**Repositorio GitHub:** (poner repositorio)
-
+**Repositorio GitHub:**
+https://github.com/Fran-cis-cap/Tarea-BDD
 
 ## 2. Estructura de la entrega
 
