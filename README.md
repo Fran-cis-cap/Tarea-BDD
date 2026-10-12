@@ -15,7 +15,7 @@ https://github.com/Fran-cis-cap/Tarea-BDD
 ## 2. Estructura de la entrega
 
 ```
-T2-ROL1-ROL2.zip
+T2-202473656-6-202473570-5.zip
 ├── PDF/   Normalización a 3FN (pasos 1FN, 2FN y 3FN)
 ├── PHP/   Todos los archivos .php
 ├── BD/    bd_saludusm.sql (tablas, function, procedimientos, triggers, views y datos de prueba)
